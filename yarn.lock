@@ -81,6 +81,7 @@ __metadata:
   dependencies:
     "@types/node": "npm:^22.13.5"
     node-api-dotnet: "npm:^0.9.5"
+    prettier: "npm:^3.5.2"
     ts-node: "npm:^10.9.2"
     typescript: "npm:^5.7.3"
   languageName: unknown
@@ -136,6 +137,15 @@ __metadata:
   version: 0.9.5
   resolution: "node-api-dotnet@npm:0.9.5"
   checksum: 10c0/f4e4d72760556bcac781e4bd3a80c225ff25baa30adf197eeec177e06555960446a85b2e74d791423a09f5b38ce4927de7719b515f42e2dc861fea50784cea9a
+  languageName: node
+  linkType: hard
+
+"prettier@npm:^3.5.2":
+  version: 3.5.2
+  resolution: "prettier@npm:3.5.2"
+  bin:
+    prettier: bin/prettier.cjs
+  checksum: 10c0/d7b597ed33f39c32ace675896ad187f06a3e48dc8a1e80051b5c5f0dae3586d53981704b8fda5ac3b080e6c2e0e197d239131b953702674f044351621ca5e1ac
   languageName: node
   linkType: hard
 
