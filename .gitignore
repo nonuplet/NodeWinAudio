@@ -1,0 +1,16 @@
+# .NET files
+bin
+obj
+Folder.DotSettings.user
+
+# node
+node_modules
+dist
+
+# yarn
+.yarn
+.pnp.*
+
+# Editor
+.idea
+.vscode

@@ -1,0 +1,17 @@
+﻿{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": true,
+    "lib": ["ESNext"],
+    "types": ["node"],
+    "outDir": "dist/cjs",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "skipLibCheck": true
+  },
+  "include": ["ts"]
+}
