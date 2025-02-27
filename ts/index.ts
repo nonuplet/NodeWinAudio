@@ -13,6 +13,12 @@ try {
 
   console.log("----- mute? -----")
   console.log(nodeWinAudio.NodeWinAudioModule.isDefaultDeviceMuted())
+
+  console.log("----- set volume 20 (0.2) -----")
+  nodeWinAudio.NodeWinAudioModule.setDefaultDeviceVolume(0.2)
+
+  console.log("----- set mute -----")
+  nodeWinAudio.NodeWinAudioModule.setDefaultDeviceMuted(true)
 } catch (e) {
   console.error(e)
 }

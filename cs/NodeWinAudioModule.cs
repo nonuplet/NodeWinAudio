@@ -28,11 +28,32 @@ public static class NodeWinAudioModule
     return volume.MasterVolumeLevelScalar;
   }
 
+  public static void SetDefaultDeviceVolume(float level)
+  {
+    if (level is < 0.0f or > 1.0f)
+    {
+      throw new ArgumentOutOfRangeException(nameof(level));
+    }
+    
+    using var enumerator = new MMDeviceEnumerator();
+    var device = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
+    using var volume = device.AudioEndpointVolume;
+    volume.MasterVolumeLevelScalar = level;
+  }
+
   public static bool IsDefaultDeviceMuted()
   {
     using var enumerator = new MMDeviceEnumerator();
     var device = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
     using var volume = device.AudioEndpointVolume;
     return volume.Mute;
+  }
+
+  public static void SetDefaultDeviceMuted(bool mute)
+  {
+    using var enumerator = new MMDeviceEnumerator();
+    var device = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
+    using var volume = device.AudioEndpointVolume;
+    volume.Mute = mute;
   }
 }
