@@ -6,7 +6,7 @@ namespace NodeWinAudio;
 [JSExport]
 public static class NodeWinAudioModule
 {
-  public static List<string> GetDevices()
+  public static List<string> GetAllDevices()
   {
     var devices = new List<string>();
     using var enumerator = new MMDeviceEnumerator();
@@ -20,11 +20,19 @@ public static class NodeWinAudioModule
     return devices;
   }
 
-  public static float GetVolume()
+  public static float GetDefaultDeviceVolume()
   {
     using var enumerator = new MMDeviceEnumerator();
     var device = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
     using var volume = device.AudioEndpointVolume;
     return volume.MasterVolumeLevelScalar;
+  }
+
+  public static bool IsDefaultDeviceMuted()
+  {
+    using var enumerator = new MMDeviceEnumerator();
+    var device = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
+    using var volume = device.AudioEndpointVolume;
+    return volume.Mute;
   }
 }

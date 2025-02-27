@@ -4,11 +4,15 @@ import type * as NodeWinAudio from "../bin/NodeWinAudio"
 console.log("hello from typescript!")
 
 const nodeWinAudio = dotnet.require("./bin/NodeWinAudio") as typeof NodeWinAudio
-console.log("----- devices -----")
-console.log(nodeWinAudio.NodeWinAudioModule.getDevices())
-console.log("----- volume -----")
 try {
-  console.log(nodeWinAudio.NodeWinAudioModule.getVolume() * 100)
+  console.log("----- devices -----")
+  console.log(nodeWinAudio.NodeWinAudioModule.getAllDevices())
+
+  console.log("----- volume -----")
+  console.log(nodeWinAudio.NodeWinAudioModule.getDefaultDeviceVolume() * 100)
+
+  console.log("----- mute? -----")
+  console.log(nodeWinAudio.NodeWinAudioModule.isDefaultDeviceMuted())
 } catch (e) {
   console.error(e)
 }
