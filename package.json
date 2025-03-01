@@ -12,6 +12,7 @@
     "esm-build": "tsc -p tsconfig.esm.json",
     "build": "npm run cjs-build && npm run esm-build",
     "dev": "ts-node --project tsconfig.cjs.json ts/index.ts",
+    "start": "dotnet build && yarn dev",
     "test": "jest"
   },
   "packageManager": "yarn@4.6.0",

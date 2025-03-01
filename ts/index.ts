@@ -1,24 +1,35 @@
-﻿import * as dotnet from "node-api-dotnet"
-import type * as NodeWinAudio from "../bin/NodeWinAudio"
+﻿import { JSVolumeNotification } from "../bin/NodeWinAudio"
+import { NodeWinAudio } from "./NodeWinAudio"
 
 console.log("hello from typescript!")
 
-const nodeWinAudio = dotnet.require("./bin/NodeWinAudio") as typeof NodeWinAudio
+const cb = (args: JSVolumeNotification): void => {
+  console.log("muted: ", args.muted)
+}
+
 try {
   console.log("----- devices -----")
-  console.log(nodeWinAudio.NodeWinAudioModule.getAllDevices())
+  console.log(NodeWinAudio.getAllDevices())
 
   console.log("----- volume -----")
-  console.log(nodeWinAudio.NodeWinAudioModule.getDefaultDeviceVolume() * 100)
+  console.log(NodeWinAudio.getDefaultDeviceVolume() * 100)
 
   console.log("----- mute? -----")
-  console.log(nodeWinAudio.NodeWinAudioModule.isDefaultDeviceMuted())
+  console.log(NodeWinAudio.isDefaultDeviceMuted())
 
-  console.log("----- set volume 20 (0.2) -----")
-  nodeWinAudio.NodeWinAudioModule.setDefaultDeviceVolume(0.2)
+  NodeWinAudio.registerVolumeChangeCallback(cb)
 
-  console.log("----- set mute -----")
-  nodeWinAudio.NodeWinAudioModule.setDefaultDeviceMuted(true)
+  // console.log("----- set volume 20 (0.2) -----")
+  // nodeWinAudio.NodeWinAudioModule.setDefaultDeviceVolume(0.2)
+  //
+  // console.log("----- set mute -----")
+  // nodeWinAudio.NodeWinAudioModule.setDefaultDeviceMuted(true)
+
+  setInterval(() => {}, 1000)
+  setTimeout(() => {
+    console.log("unregistered")
+    NodeWinAudio.unregisterVolumeChangeCallback(cb)
+  }, 5000)
 } catch (e) {
   console.error(e)
 }
