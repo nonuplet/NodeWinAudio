@@ -26,10 +26,10 @@ try {
   // nodeWinAudio.NodeWinAudioModule.setDefaultDeviceMuted(true)
 
   setInterval(() => {}, 1000)
-  setTimeout(() => {
-    console.log("unregistered")
-    NodeWinAudio.unregisterVolumeChangeCallback(cb)
-  }, 5000)
+  // setTimeout(() => {
+  //   console.log("unregistered")
+  //   NodeWinAudio.unregisterVolumeChangeCallback(cb)
+  // }, 5000)
 } catch (e) {
   console.error(e)
 }

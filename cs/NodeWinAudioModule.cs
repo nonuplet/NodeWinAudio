@@ -1,27 +1,68 @@
 ﻿using Microsoft.JavaScript.NodeApi;
 using NAudio.CoreAudioApi;
+using NAudio.CoreAudioApi.Interfaces;
 
 namespace NodeWinAudio.cs;
 
 [JSExport]
 public class NodeWinAudioModule
 {
-  public static NodeWinAudioModule Instance { get; } = new NodeWinAudioModule(); // Singleton
+  public static NodeWinAudioModule Instance { get; } = new(); // Singleton
 
   private MMDevice _defaultDevice;
   private AudioEndpointVolume _defaultDeviceEndpoint;
-  private bool _isVolumeMonitoring = false;
-  private readonly Dictionary<string, VolumeChangeCallback> VolumeChangeCallbacks = new();
+  private readonly DeviceNotification _deviceNotification;
+  private readonly Dictionary<string, VolumeChangeCallback> _volumeChangeCallbacks = new();
 
   public delegate void VolumeChangeCallback(JSVolumeNotification data);
 
+  private class DeviceNotification : IMMNotificationClient
+  {
+    public void OnDeviceStateChanged(string deviceId, DeviceState newState)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void OnDeviceAdded(string pwstrDeviceId)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void OnDeviceRemoved(string deviceId)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void OnDefaultDeviceChanged(DataFlow flow, Role role, string defaultDeviceId)
+    {
+      if (flow == DataFlow.Render && role == Role.Console)
+      {
+        Instance.OnDefaultDeviceChanged();
+      }
+    }
+
+    public void OnPropertyValueChanged(string pwstrDeviceId, PropertyKey key)
+    {
+      throw new NotImplementedException();
+    }
+  }
+
   private NodeWinAudioModule()
+  {
+    using var enumerator = new MMDeviceEnumerator();
+    _deviceNotification = new DeviceNotification();
+    enumerator.RegisterEndpointNotificationCallback(_deviceNotification);
+    _defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
+    _defaultDeviceEndpoint = _defaultDevice.AudioEndpointVolume;
+  }
+
+  private void SetDefaultDevice()
   {
     using var enumerator = new MMDeviceEnumerator();
     _defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
     _defaultDeviceEndpoint = _defaultDevice.AudioEndpointVolume;
   }
-
+  
   public List<string> GetAllDevices()
   {
     var devices = new List<string>();
@@ -64,22 +105,20 @@ public class NodeWinAudioModule
   private void StartVolumeMonitoring()
   {
     _defaultDeviceEndpoint.OnVolumeNotification += OnVolumeChanged;
-    _isVolumeMonitoring = true;
   }
 
   private void StopVolumeMonitoring()
   {
     _defaultDeviceEndpoint.OnVolumeNotification -= OnVolumeChanged;
-    _isVolumeMonitoring = false;
   }
 
   private void OnVolumeChanged(AudioVolumeNotificationData data)
   {
     try
     {
-      foreach (var callback in VolumeChangeCallbacks.Values)
+      foreach (var callback in _volumeChangeCallbacks.Values)
       {
-        callback(new JSVolumeNotification(data));
+        callback(new JSVolumeNotification(_defaultDevice, data));
       }
     }
     catch (Exception ex)
@@ -90,23 +129,23 @@ public class NodeWinAudioModule
 
   public void RegisterVolumeChangeCallback(VolumeChangeCallback callback, string uuid)
   {
-    if (!_isVolumeMonitoring)
+    if (_volumeChangeCallbacks.Count == 0)
     {
       StartVolumeMonitoring();
     }
 
-    VolumeChangeCallbacks.Add(uuid, callback);
+    _volumeChangeCallbacks.Add(uuid, callback);
   }
 
   public void UnregisterVolumeChangeCallback(string uuid)
   {
-    if (!VolumeChangeCallbacks.ContainsKey(uuid))
+    if (!_volumeChangeCallbacks.ContainsKey(uuid))
     {
       throw new KeyNotFoundException();
     }
     
-    VolumeChangeCallbacks.Remove(uuid);
-    if (VolumeChangeCallbacks.Count == 0)
+    _volumeChangeCallbacks.Remove(uuid);
+    if (_volumeChangeCallbacks.Count == 0)
     {
       StopVolumeMonitoring();
     }
@@ -114,8 +153,18 @@ public class NodeWinAudioModule
 
   public void ClearVolumeChangeCallbacks()
   {
-    VolumeChangeCallbacks.Clear();
+    _volumeChangeCallbacks.Clear();
     StopVolumeMonitoring();
+  }
+
+  private void OnDefaultDeviceChanged()
+  {
+    // Prev Device
+    StopVolumeMonitoring();
+    
+    // New Device
+    SetDefaultDevice();
+    StartVolumeMonitoring();
   }
 }
 
