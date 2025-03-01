@@ -1,32 +1,28 @@
 ﻿using Microsoft.JavaScript.NodeApi;
 using NAudio.CoreAudioApi;
 
-namespace NodeWinAudio;
+namespace NodeWinAudio.cs;
 
 [JSExport]
-public class JSVolumeNotification
+public class NodeWinAudioModule
 {
-  public bool Muted { get; private set; }
-  public float MasterVolume { get; private set; }
+  public static NodeWinAudioModule Instance { get; } = new NodeWinAudioModule(); // Singleton
 
-  public JSVolumeNotification(AudioVolumeNotificationData data)
-  {
-    Muted = data.Muted;
-    MasterVolume = data.MasterVolume;
-  }
-}
-
-[JSExport]
-public static class NodeWinAudioModule
-{
-  private static MMDevice? _defaultDevice;
-  private static AudioEndpointVolume? _defaultDeviceEndpoint;
-  private static bool _isVolumeMonitoring = false;
-  private static readonly Dictionary<string, VolumeChangeCallback> VolumeChangeCallbacks = new();
+  private MMDevice _defaultDevice;
+  private AudioEndpointVolume _defaultDeviceEndpoint;
+  private bool _isVolumeMonitoring = false;
+  private readonly Dictionary<string, VolumeChangeCallback> VolumeChangeCallbacks = new();
 
   public delegate void VolumeChangeCallback(JSVolumeNotification data);
 
-  public static List<string> GetAllDevices()
+  private NodeWinAudioModule()
+  {
+    using var enumerator = new MMDeviceEnumerator();
+    _defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
+    _defaultDeviceEndpoint = _defaultDevice.AudioEndpointVolume;
+  }
+
+  public List<string> GetAllDevices()
   {
     var devices = new List<string>();
     using var enumerator = new MMDeviceEnumerator();
@@ -40,67 +36,44 @@ public static class NodeWinAudioModule
     return devices;
   }
 
-  public static float GetDefaultDeviceVolume()
+  public float GetDefaultDeviceVolume()
   {
-    using var enumerator = new MMDeviceEnumerator();
-    var device = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
-    using var volume = device.AudioEndpointVolume;
-    return volume.MasterVolumeLevelScalar;
+    return _defaultDeviceEndpoint.MasterVolumeLevelScalar;
   }
 
-  public static void SetDefaultDeviceVolume(float level)
+  public void SetDefaultDeviceVolume(float level)
   {
     if (level is < 0.0f or > 1.0f)
     {
       throw new ArgumentOutOfRangeException(nameof(level));
     }
-
-    using var enumerator = new MMDeviceEnumerator();
-    var device = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
-    using var volume = device.AudioEndpointVolume;
-    volume.MasterVolumeLevelScalar = level;
+    
+    _defaultDeviceEndpoint.MasterVolumeLevelScalar = level;
   }
 
-  public static bool IsDefaultDeviceMuted()
+  public bool IsDefaultDeviceMuted()
   {
-    using var enumerator = new MMDeviceEnumerator();
-    var device = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
-    using var volume = device.AudioEndpointVolume;
-    return volume.Mute;
+    return _defaultDeviceEndpoint.Mute;
   }
 
-  public static void SetDefaultDeviceMuted(bool mute)
+  public void SetDefaultDeviceMuted(bool mute)
   {
-    using var enumerator = new MMDeviceEnumerator();
-    var device = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
-    using var volume = device.AudioEndpointVolume;
-    volume.Mute = mute;
+    _defaultDeviceEndpoint.Mute = mute;
   }
 
-  private static void CheckDefaultDevice()
+  private void StartVolumeMonitoring()
   {
-    if (_defaultDevice is not null) return;
-
-    using var enumerator = new MMDeviceEnumerator();
-    _defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
-    _defaultDeviceEndpoint = _defaultDevice.AudioEndpointVolume;
-  }
-
-  private static void StartVolumeMonitoring()
-  {
-    CheckDefaultDevice();
-    _defaultDeviceEndpoint!.OnVolumeNotification += OnVolumeChanged;
+    _defaultDeviceEndpoint.OnVolumeNotification += OnVolumeChanged;
     _isVolumeMonitoring = true;
   }
 
-  private static void StopVolumeMonitoring()
+  private void StopVolumeMonitoring()
   {
-    CheckDefaultDevice();
-    _defaultDeviceEndpoint!.OnVolumeNotification -= OnVolumeChanged;
+    _defaultDeviceEndpoint.OnVolumeNotification -= OnVolumeChanged;
     _isVolumeMonitoring = false;
   }
 
-  private static void OnVolumeChanged(AudioVolumeNotificationData data)
+  private void OnVolumeChanged(AudioVolumeNotificationData data)
   {
     try
     {
@@ -115,7 +88,7 @@ public static class NodeWinAudioModule
     }
   }
 
-  public static void RegisterVolumeChangeCallback(VolumeChangeCallback callback, string uuid)
+  public void RegisterVolumeChangeCallback(VolumeChangeCallback callback, string uuid)
   {
     if (!_isVolumeMonitoring)
     {
@@ -125,7 +98,7 @@ public static class NodeWinAudioModule
     VolumeChangeCallbacks.Add(uuid, callback);
   }
 
-  public static void UnregisterVolumeChangeCallback(string uuid)
+  public void UnregisterVolumeChangeCallback(string uuid)
   {
     if (!VolumeChangeCallbacks.ContainsKey(uuid))
     {
@@ -139,7 +112,7 @@ public static class NodeWinAudioModule
     }
   }
 
-  public static void ClearVolumeChangeCallbacks()
+  public void ClearVolumeChangeCallbacks()
   {
     VolumeChangeCallbacks.Clear();
     StopVolumeMonitoring();

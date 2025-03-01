@@ -1,11 +1,9 @@
 ﻿import * as dotnet from "node-api-dotnet"
-import type * as NodeWinAudioModule from "../bin/NodeWinAudio"
-import { JSVolumeNotification } from "../bin/NodeWinAudio"
+import { JSVolumeNotification, NodeWinAudioModule } from "../bin/NodeWinAudio"
 import { UUID } from "node:crypto"
 
 export class NodeWinAudio {
-  private static winAudio = dotnet.require("./bin/NodeWinAudio")
-    .NodeWinAudioModule as typeof NodeWinAudioModule.NodeWinAudioModule
+  private static winAudio = dotnet.require("./bin/NodeWinAudio").NodeWinAudioModule.instance as NodeWinAudioModule
 
   private static callbacks = new Map<(data: JSVolumeNotification) => void, UUID>()
 
