@@ -4,14 +4,15 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "strict": true,
     "lib": ["ESNext"],
     "types": ["node"],
     "outDir": "dist/esm",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
+    "strict": true,
     "skipLibCheck": true
   },
-  "include": ["ts"]
+  "include": ["ts"],
+  "exclude": ["node_modules", "ts/examples"]
 }
