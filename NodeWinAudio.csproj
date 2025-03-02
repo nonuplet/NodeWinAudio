@@ -4,12 +4,30 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ImplicitUsings>true</ImplicitUsings>
     <OutDir>bin</OutDir>
+    <OutputType>Library</OutputType>
+    <PublishAot>false</PublishAot>
+    <PublishDir>bin</PublishDir>
+    <PublishNodeModule>true</PublishNodeModule>
+    <PackNpmPackage>true</PackNpmPackage>
+    <PackageOutputPath>pkg</PackageOutputPath>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Javascript.NodeApi" Version="0.9.5" />
     <PackageReference Include="Microsoft.JavaScript.NodeApi.Generator" Version="0.9.5" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
   </ItemGroup>
+  
+  <Target Name="RemoveUnusedDLLs" AfterTargets="Build;Publish">
+    <ItemGroup>
+      <Unused Include="$(PublishDir)\NAudio.Asio.dll" />
+      <Unused Include="$(PublishDir)\NAudio.Midi.dll" />
+    </ItemGroup>
+    <Delete Files="@(Unused)" />
+  </Target>
 
 </Project>
