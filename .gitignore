@@ -6,6 +6,7 @@ Folder.DotSettings.user
 # node
 node_modules
 dist
+node-win-audio.tgz
 
 # yarn
 .yarn
