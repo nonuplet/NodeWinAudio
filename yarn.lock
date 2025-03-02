@@ -886,11 +886,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*, @types/node@npm:^22.13.5":
-  version: 22.13.5
-  resolution: "@types/node@npm:22.13.5"
+  version: 22.13.8
+  resolution: "@types/node@npm:22.13.8"
   dependencies:
     undici-types: "npm:~6.20.0"
-  checksum: 10c0/a2e7ed7bb0690e439004779baedeb05159c5cc41ef6d81c7a6ebea5303fde4033669e1c0e41ff7453b45fd2fea8dbd55fddfcd052950c7fcae3167c970bca725
+  checksum: 10c0/bfc92b734a9dce6ac5daee0a52feccdf5dcb3804d895e4bc5384e2f4644612b8801725cd03c8c3c0888fb5eeb16b875877ac44b77641e0196dc1a837b1c2a366
   languageName: node
   linkType: hard
 
@@ -916,21 +916,6 @@ __metadata:
   checksum: 10c0/d16937d7ac30dff697801c3d6f235be2166df42e4a88bf730fa6dc09201de3727c0a9500c59a672122313341de5f24e45ee0ff579c08ce91928e519090b7906b
   languageName: node
   linkType: hard
-
-"NodeWinAudio@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "NodeWinAudio@workspace:."
-  dependencies:
-    "@types/jest": "npm:^29.5.14"
-    "@types/node": "npm:^22.13.5"
-    jest: "npm:^29.7.0"
-    node-api-dotnet: "npm:^0.9.5"
-    prettier: "npm:^3.5.2"
-    ts-jest: "npm:^29.2.6"
-    ts-node: "npm:^10.9.2"
-    typescript: "npm:^5.7.3"
-  languageName: unknown
-  linkType: soft
 
 "abbrev@npm:^3.0.0":
   version: 3.0.0
@@ -1238,9 +1223,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.30001688":
-  version: 1.0.30001700
-  resolution: "caniuse-lite@npm:1.0.30001700"
-  checksum: 10c0/3d391bcdd193208166d3ad759de240b9c18ac3759dbd57195770f0fcd2eedcd47d5e853609aba1eee5a2def44b0a14eee457796bdb3451a27de0c8b27355017c
+  version: 1.0.30001701
+  resolution: "caniuse-lite@npm:1.0.30001701"
+  checksum: 10c0/a814bd4dd8b49645ca51bc6ee42120660a36394bb54eb6084801d3f2bbb9471e5e1a9a8a25f44f83086a032d46e66b33031e2aa345f699b90a7e84a9836b819c
   languageName: node
   linkType: hard
 
@@ -1443,9 +1428,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.73":
-  version: 1.5.104
-  resolution: "electron-to-chromium@npm:1.5.104"
-  checksum: 10c0/f58d9836607fba37b393aa86bd1bbc01721c32328b3c80e86bc39e3e636cc30ee70f97e652f611a38ab3de219cf16aca85ebda4774094bf43723e671290c344d
+  version: 1.5.109
+  resolution: "electron-to-chromium@npm:1.5.109"
+  checksum: 10c0/19d86b95b1288b2e73d9d6084f64b14d4ef2c51d8551d85697ea68da690542d26e6d07878ff053f137e561e3e6c8c2b062d0353bc159930569831f7960bb6ed7
   languageName: node
   linkType: hard
 
@@ -2648,8 +2633,8 @@ __metadata:
   linkType: hard
 
 "minipass-fetch@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "minipass-fetch@npm:4.0.0"
+  version: 4.0.1
+  resolution: "minipass-fetch@npm:4.0.1"
   dependencies:
     encoding: "npm:^0.1.13"
     minipass: "npm:^7.0.3"
@@ -2658,7 +2643,7 @@ __metadata:
   dependenciesMeta:
     encoding:
       optional: true
-  checksum: 10c0/7fa30ce7c373fb6f94c086b374fff1589fd7e78451855d2d06c2e2d9df936d131e73e952163063016592ed3081444bd8d1ea608533313b0149156ce23311da4b
+  checksum: 10c0/a3147b2efe8e078c9bf9d024a0059339c5a09c5b1dded6900a219c218cc8b1b78510b62dae556b507304af226b18c3f1aeb1d48660283602d5b6586c399eed5c
   languageName: node
   linkType: hard
 
@@ -2785,6 +2770,21 @@ __metadata:
   checksum: 10c0/52a0dbd25ccf545892670d1551690fe0facb6a471e15f2cfa1b20142a5b255b3aa254af5f59d6ecb69c2bec7390bc643c43aa63b13bf5e64b6075952e716b1aa
   languageName: node
   linkType: hard
+
+"node-win-audio@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "node-win-audio@workspace:."
+  dependencies:
+    "@types/jest": "npm:^29.5.14"
+    "@types/node": "npm:^22.13.5"
+    jest: "npm:^29.7.0"
+    node-api-dotnet: "npm:^0.9.5"
+    prettier: "npm:^3.5.2"
+    ts-jest: "npm:^29.2.6"
+    ts-node: "npm:^10.9.2"
+    typescript: "npm:^5.7.3"
+  languageName: unknown
+  linkType: soft
 
 "nopt@npm:^8.0.0":
   version: 8.1.0
@@ -3467,22 +3467,22 @@ __metadata:
   linkType: hard
 
 "typescript@npm:^5.7.3":
-  version: 5.7.3
-  resolution: "typescript@npm:5.7.3"
+  version: 5.8.2
+  resolution: "typescript@npm:5.8.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/b7580d716cf1824736cc6e628ab4cd8b51877408ba2be0869d2866da35ef8366dd6ae9eb9d0851470a39be17cbd61df1126f9e211d8799d764ea7431d5435afa
+  checksum: 10c0/5c4f6fbf1c6389b6928fe7b8fcd5dc73bb2d58cd4e3883f1d774ed5bd83b151cbac6b7ecf11723de56d4676daeba8713894b1e9af56174f2f9780ae7848ec3c6
   languageName: node
   linkType: hard
 
 "typescript@patch:typescript@npm%3A^5.7.3#optional!builtin<compat/typescript>":
-  version: 5.7.3
-  resolution: "typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>::version=5.7.3&hash=5786d5"
+  version: 5.8.2
+  resolution: "typescript@patch:typescript@npm%3A5.8.2#optional!builtin<compat/typescript>::version=5.8.2&hash=5786d5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10c0/6fd7e0ed3bf23a81246878c613423730c40e8bdbfec4c6e4d7bf1b847cbb39076e56ad5f50aa9d7ebd89877999abaee216002d3f2818885e41c907caaa192cc4
+  checksum: 10c0/5448a08e595cc558ab321e49d4cac64fb43d1fa106584f6ff9a8d8e592111b373a995a1d5c7f3046211c8a37201eb6d0f1566f15cdb7a62a5e3be01d087848e2
   languageName: node
   linkType: hard
 
@@ -3512,8 +3512,8 @@ __metadata:
   linkType: hard
 
 "update-browserslist-db@npm:^1.1.1":
-  version: 1.1.2
-  resolution: "update-browserslist-db@npm:1.1.2"
+  version: 1.1.3
+  resolution: "update-browserslist-db@npm:1.1.3"
   dependencies:
     escalade: "npm:^3.2.0"
     picocolors: "npm:^1.1.1"
@@ -3521,7 +3521,7 @@ __metadata:
     browserslist: ">= 4.21.0"
   bin:
     update-browserslist-db: cli.js
-  checksum: 10c0/9cb353998d6d7d6ba1e46b8fa3db888822dd972212da4eda609d185eb5c3557a93fd59780ceb757afd4d84240518df08542736969e6a5d6d6ce2d58e9363aac6
+  checksum: 10c0/682e8ecbf9de474a626f6462aa85927936cdd256fe584c6df2508b0df9f7362c44c957e9970df55dfe44d3623807d26316ea2c7d26b80bb76a16c56c37233c32
   languageName: node
   linkType: hard
 

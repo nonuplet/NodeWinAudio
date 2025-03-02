@@ -1,9 +1,25 @@
 ﻿import * as dotnet from "node-api-dotnet"
 import { JSVolumeNotification, NodeWinAudioModule } from "../bin/NodeWinAudio"
 import { UUID } from "node:crypto"
+import * as path from "node:path"
+import * as fs from "fs"
+
+function getPackageRoot(): string {
+  let dir = __dirname
+  while (true) {
+    if (fs.existsSync(path.join(dir, "package.json"))) {
+      break
+    } else {
+      dir = path.dirname(dir)
+    }
+  }
+  return dir
+}
+
+const modulePath = path.join(getPackageRoot(), "./bin/NodeWinAudio")
 
 export class NodeWinAudio {
-  private static winAudio = dotnet.require("./bin/NodeWinAudio").NodeWinAudioModule.instance as NodeWinAudioModule
+  private static winAudio = dotnet.require(modulePath).NodeWinAudioModule.instance as NodeWinAudioModule
 
   private static callbacks = new Map<(data: JSVolumeNotification) => void, UUID>()
 
