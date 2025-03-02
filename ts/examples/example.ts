@@ -1,5 +1,5 @@
-﻿import { JSVolumeNotification, JSNotificationType } from "../bin/NodeWinAudio"
-import { NodeWinAudio } from "./NodeWinAudio"
+﻿import { JSVolumeNotification, JSNotificationType } from "../../bin/NodeWinAudio"
+import { NodeWinAudio } from "../NodeWinAudio"
 
 console.log("hello from typescript!")
 
