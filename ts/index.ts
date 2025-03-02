@@ -1,10 +1,13 @@
-﻿import { JSVolumeNotification } from "../bin/NodeWinAudio"
+﻿import { JSVolumeNotification, JSNotificationType } from "../bin/NodeWinAudio"
 import { NodeWinAudio } from "./NodeWinAudio"
 
 console.log("hello from typescript!")
 
 const cb = (args: JSVolumeNotification): void => {
+  console.log("name: ", args.name)
+  console.log("volume: ", args.masterVolume)
   console.log("muted: ", args.muted)
+  console.log("type: ", JSNotificationType[args.type])
 }
 
 try {

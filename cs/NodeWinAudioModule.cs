@@ -62,7 +62,7 @@ public class NodeWinAudioModule
     _defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
     _defaultDeviceEndpoint = _defaultDevice.AudioEndpointVolume;
   }
-  
+
   public List<string> GetAllDevices()
   {
     var devices = new List<string>();
@@ -88,7 +88,7 @@ public class NodeWinAudioModule
     {
       throw new ArgumentOutOfRangeException(nameof(level));
     }
-    
+
     _defaultDeviceEndpoint.MasterVolumeLevelScalar = level;
   }
 
@@ -114,16 +114,19 @@ public class NodeWinAudioModule
 
   private void OnVolumeChanged(AudioVolumeNotificationData data)
   {
-    try
+    OnVolumeChangedJS(new JSVolumeNotification(
+      _defaultDevice,
+      data.Muted,
+      data.MasterVolume,
+      JSNotificationType.VolumeChanged
+    ));
+  }
+
+  private void OnVolumeChangedJS(JSVolumeNotification notification)
+  {
+    foreach (var callback in _volumeChangeCallbacks.Values)
     {
-      foreach (var callback in _volumeChangeCallbacks.Values)
-      {
-        callback(new JSVolumeNotification(_defaultDevice, data));
-      }
-    }
-    catch (Exception ex)
-    {
-      Console.WriteLine(ex);
+      callback(notification);
     }
   }
 
@@ -143,7 +146,7 @@ public class NodeWinAudioModule
     {
       throw new KeyNotFoundException();
     }
-    
+
     _volumeChangeCallbacks.Remove(uuid);
     if (_volumeChangeCallbacks.Count == 0)
     {
@@ -161,10 +164,18 @@ public class NodeWinAudioModule
   {
     // Prev Device
     StopVolumeMonitoring();
-    
+
     // New Device
     SetDefaultDevice();
     StartVolumeMonitoring();
+
+    // Call VolumeChangeCallbacks
+    var notification = new JSVolumeNotification(
+      _defaultDevice,
+      _defaultDeviceEndpoint.Mute,
+      _defaultDeviceEndpoint.MasterVolumeLevelScalar,
+      JSNotificationType.DeviceChanged
+    );
+    OnVolumeChangedJS(notification);
   }
 }
-
