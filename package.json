@@ -1,21 +1,33 @@
 {
-  "name": "NodeWinAudio",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/esm/index.d.ts",
+  "name": "node-win-audio",
+  "version": "0.1.0",
+  "description": "Control Windows Audio",
+  "main": "./dist/cjs/NodeWinAudio.js",
+  "module": "./dist/esm/NodeWinAudio.js",
+  "types": "./dist/esm/NodeWinAudio.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/NodeWinAudio.js",
+      "import": "./dist/esm/NodeWinAudio.js",
+      "types": "./dist/esm/NodeWinAudio.d.ts"
+    },
+    "./bin/": "./bin/",
+    "./package.json": "./package.json"
+  },
   "files": [
-    "ts",
-    "dist"
+    "dist",
+    "bin"
   ],
   "scripts": {
-    "cjs-build": "tsc -p tsconfig.cjs.json",
-    "esm-build": "tsc -p tsconfig.esm.json",
-    "build": "npm run cjs-build && npm run esm-build",
+    "build": "yarn build:dotnet && yarn build:cjs && yarn build:esm",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:dotnet": "dotnet build",
+    "package": "yarn build && yarn pack --filename node-win-audio.tgz",
     "dev": "ts-node --project tsconfig.cjs.json ts/examples/example.ts",
-    "start": "dotnet build && yarn dev",
+    "start": "yarn build:dotnet && yarn dev",
     "test": "jest"
   },
-  "packageManager": "yarn@4.6.0",
   "devDependencies": {
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.5",
