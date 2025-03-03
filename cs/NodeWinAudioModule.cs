@@ -50,10 +50,16 @@ public class NodeWinAudioModule
   private NodeWinAudioModule()
   {
     using var enumerator = new MMDeviceEnumerator();
-    _deviceNotification = new DeviceNotification();
-    enumerator.RegisterEndpointNotificationCallback(_deviceNotification);
     _defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
     _defaultDeviceEndpoint = _defaultDevice.AudioEndpointVolume;
+
+    /*
+      This is a hack to resolve the COM issue.
+      https://github.com/naudio/NAudio/issues/425
+     */
+    _ = _defaultDevice.FriendlyName; // OMG
+    _deviceNotification = new DeviceNotification();
+    enumerator.RegisterEndpointNotificationCallback(_deviceNotification);
   }
 
   private void SetDefaultDevice()
