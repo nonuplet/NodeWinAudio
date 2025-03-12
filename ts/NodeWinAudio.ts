@@ -1,8 +1,20 @@
 ﻿import * as dotnet from "node-api-dotnet"
-import { JSVolumeNotification, NodeWinAudioModule } from "../bin/NodeWinAudio"
+import { NodeWinAudioModule } from "../bin/NodeWinAudio"
 import { UUID } from "node:crypto"
 import * as path from "node:path"
 import * as fs from "fs"
+
+export enum JSNotificationType {
+  VolumeChanged = 0,
+  DeviceChanged = 1,
+}
+
+export type JSVolumeNotification = {
+  name: string
+  muted: boolean
+  masterVolume: number
+  type: JSNotificationType
+}
 
 function getPackageRoot(): string {
   let dir = __dirname
